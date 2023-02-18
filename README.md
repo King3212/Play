@@ -1,3 +1,3 @@
-# Play
+# 一时兴起写的那些小游戏
 
-## Minesweeper(扫雷)
+1. Minesweeper(扫雷) 于2023/2/18
