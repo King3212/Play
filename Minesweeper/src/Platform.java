@@ -123,6 +123,8 @@ public class Platform {
         return true;
     }
 
+
+    /*the note can be show int one title or just make it can be clicked*/
     public void click(int x, int y, boolean mark){
         if (mark){
             if (Blocks[x][y].isOpen()) {
@@ -178,7 +180,7 @@ public class Platform {
         }
         if (numOpen == (PlatformSize * PlatformSize - BoomNumber)){
             gameOver = true;
-            System.out.println("You Win!");
+            System.out.println("You Win!"); // must be changed
 
         }
     }
