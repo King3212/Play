@@ -1,9 +1,18 @@
-import java.util.Scanner;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import static java.lang.System.exit;
 
 public class Game {
     int level;
     int PlatformSize;
     int BoomNumber;
+    Frame window;
 
     //choose level
     public Game(int level) {
@@ -44,39 +53,118 @@ public class Game {
         }
     }
 
+    private void click(int x, int y, int times, Platform platform, boolean mark, Button[] buttons){
+        if (times == 1){
+            while (! platform.firstClick(x, y,buttons)){
+                platform = new Platform(PlatformSize, BoomNumber,buttons);
+            }
+        }
+        else{
+            platform.click(x, y, mark,buttons);
+            platform.checkGameWin();
+        }
+        if (platform.isGameOver()){
+            Frame window = new Frame("Result");
+            window.setSize(240,180);
+            window.setLayout(new GridLayout(2,1));
+            window.setBackground(Color.lightGray);
+            if(platform.is_win()){
+                window.add(new TextField("You Win"));
+            } else if (!platform.is_win()) {
+                window.add(new TextField("You Lost"));
+            }
+            window.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    window.setVisible(false);
+                }
+            });
+            window.add(new TextField("These windows will close in 20 sec."));
+            window.setVisible(true);
+            TimerTask quit = new TimerTask() {
+                @Override
+                public void run() {
+                    window.setVisible(false);
+                    exit(0);
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(quit,10*1000L);
+        }
+    }
+
+
+
     public void play() {
         printLines();
         setLevel();
-        Platform platform = new Platform(PlatformSize, BoomNumber);
-        Scanner sc = new Scanner(System.in);
-        System.out.print("请输入横纵坐标（请以空格隔开，例如：“ 5 5 ”）：");
+        final int[] times = {1};
 
-        /*input
-        * need to be changed
-        *
-        * need a function:
-        * click button -->  get the location -->  find out the x and y --> active it
-        */
-        int x = sc.nextInt();
-        int y = sc.nextInt();
-        printLines();
+        window = new Frame("Minesweeper");
+        int plWidth = PlatformSize * 40;
+        int plHeight = PlatformSize * 40;
+        window.setSize(plWidth,plHeight);
+        window.setLayout(new GridLayout(PlatformSize,PlatformSize,5,5));
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                exit(0);
+            }
+        });
 
-        /*this make the first graphs*/
-        while (! platform.firstClick(x, y)){
-            platform = new Platform(PlatformSize, BoomNumber);
+
+        Button[] buttons = new Button[PlatformSize * PlatformSize];
+        for (int i = 0; i < PlatformSize * PlatformSize; i++){
+            buttons[i] = new Button();
+            buttons[i].setBackground(Color.gray);
+        }
+        MouseListener[] mouseListeners = new MouseListener[PlatformSize*PlatformSize];
+
+        Platform platform = new Platform(PlatformSize, BoomNumber,buttons);
+
+        for (int i = 0; i < PlatformSize * PlatformSize; i++){
+            int finalI = i;
+            mouseListeners[i] = new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getButton() == e.BUTTON1){
+                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], platform, false,buttons);
+                        times[0] ++;
+                    }else if (e.getButton() == e.BUTTON3){
+                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], platform, true,buttons);
+                        times[0] ++;
+                    }
+
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+
+                }
+            };
+
+            buttons[i].addMouseListener(mouseListeners[i]);
+            window.add(buttons[i]);
         }
 
-        /*this make action to the data*/
-        platform.checkGameWin();
-        while (!platform.isGameOver()) {
-            System.out.print("请输入横纵坐标：");
-            x = sc.nextInt();
-            y = sc.nextInt();
-            System.out.print("若标记&取消标记该点请输入1，点开雷区输入0：");
-            boolean mark = sc.nextInt() != 0;
-            printLines();
-            platform.click(x, y, mark);
-            platform.checkGameWin();
-        }
+        window.setVisible(true);
+
+
     }
 }

@@ -1,25 +1,84 @@
-import java.util.Scanner;
-class ThreadPause {
-    // method to pause the string
-    // here we will pass the time in seconds
-    public void wait(int sec) {
-        try {
-            Thread.currentThread().sleep(sec * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-}
+import java.awt.*;
+import java.awt.event.*;
+
+import static java.lang.System.exit;
+
 public class Main {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("请选择难度\n\n 1.初级：9*9 10颗雷\n 2.中级：16*16 40颗雷\n 3.高级：25*25 90颗雷 \n" +
-                "输入序号并回车完成选择：");
-        Game game = new Game(sc.nextInt());
-        game.play();
-        ThreadPause TP = new ThreadPause();
-        System.out.println("The windows will close in 60 seconds.");
-        TP.wait(60);
+        //init Platforms
+        Frame window = new Frame("Minesweeper");
+        int plWidth = 640;
+        int plHeight = 640;
+        window.setSize(plWidth,plHeight);
+        window.setBackground(Color.lightGray);
+        window.setLayout(new BorderLayout());
 
+        Panel middle = new Panel(new GridLayout(4,1,5,50));
+
+        window.add(middle,BorderLayout.CENTER);
+        Button easy = new Button("Easy");
+        Button normal = new Button("Normal");
+        Button hard = new Button("hard");
+        Button exit = new Button("exit");
+        easy.setBackground(Color.white);
+        normal.setBackground(Color.white);
+        hard.setBackground(Color.white);
+        exit.setBackground(Color.white);
+
+        middle.add(easy);
+        middle.add(normal);
+        middle.add(hard);
+        middle.add(exit);
+
+        window.setVisible(true);
+        ActionListener exitListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                exit(0);
+            }
+
+        };
+
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                System.exit(0);
+            }
+        });
+        exit.addActionListener(exitListener);
+
+
+        ActionListener hardListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                window.setVisible(false);
+                Game game = new Game(3);
+                game.play();
+            }
+
+        };
+        hard.addActionListener(hardListener);
+
+        ActionListener easyListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                window.setVisible(false);
+                Game game = new Game(1);
+                game.play();
+            }
+
+        };
+        easy.addActionListener(easyListener);
+
+        ActionListener normalListener = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                window.setVisible(false);
+                Game game = new Game(2);
+                game.play();
+            }
+
+        };
+        normal.addActionListener(normalListener);
     }
 }

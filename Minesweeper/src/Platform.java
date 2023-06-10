@@ -1,8 +1,11 @@
+import java.awt.*;
+
 public class Platform {
     private int PlatformSize;
     private int BoomNumber;
     private Block[][] Blocks;
 
+    private boolean is_win = false;
 
 
     private boolean gameOver = false;
@@ -12,11 +15,15 @@ public class Platform {
         System.out.println("GameOver");
     }
 
+    public boolean is_win() {
+        return is_win;
+    }
+
     public boolean isGameOver() {
         return gameOver;
     }
 
-    public Platform (int PlatformSize,int BoomNumber){
+    public Platform (int PlatformSize,int BoomNumber,Button[] buttons){
         this.BoomNumber = BoomNumber;
         this.PlatformSize = PlatformSize;
         Blocks = new Block[PlatformSize+2][PlatformSize+2];
@@ -27,7 +34,7 @@ public class Platform {
         }
         randomSetBoom();
         setNumber();
-        print();
+        print(buttons);
     }
 
 
@@ -68,7 +75,7 @@ public class Platform {
         }
     }
 
-    private void print(){
+    private void print(Button[] buttons){
         System.out.print("   ");
         for (int x = 1; x < PlatformSize + 1; x++) {
             System.out.printf(" %2d ",x);
@@ -80,7 +87,7 @@ public class Platform {
         for (int y = 1; y < PlatformSize + 1; y++) {
             System.out.printf("%2d | ",y);
             for (int x = 1; x < PlatformSize + 1; x++) {
-                Blocks[x][y].print();
+                Blocks[x][y].print(buttons[(x-1) + (y-1) * PlatformSize]);
                 System.out.print(" | ");
             }
             System.out.println();
@@ -107,7 +114,7 @@ public class Platform {
     }
 
 
-    public boolean firstClick(int x, int y){
+    public boolean firstClick(int x, int y,Button[] buttons){
         while (Blocks[x][y].isBoom()){
             return false;
         }
@@ -119,34 +126,34 @@ public class Platform {
             Blocks[i][0].setNumber(9);
         }
         Open();
-        print();
+        print(buttons);
         return true;
     }
 
 
     /*the note can be show int one title or just make it can be clicked*/
-    public void click(int x, int y, boolean mark){
+    public void click(int x, int y, boolean mark,Button[] buttons){
         if (mark){
             if (Blocks[x][y].isOpen()) {
                 Blocks[x][y].setMark();
                 System.out.println("已完成搜索，禁止标记！");
             }
             Blocks[x][y].setMark();
-            print();
+            print(buttons);
         }
         else {
             if (Blocks[x][y].isMark()){
                 System.out.println("该点已标记，请取消标记后再尝试搜索");
-                print();
+                print(buttons);
             }
             else {
                 Blocks[x][y].setOpen();
                 if (Blocks[x][y].isBoom()) {
-                    print();
+                    print(buttons);
                     setGameOver();
                 } else {
                     Open();
-                    print();
+                    print(buttons);
                 }
             }
             if (!gameOver) checkGameWin();
@@ -178,10 +185,10 @@ public class Platform {
                 }
             }
         }
-        if (numOpen == (PlatformSize * PlatformSize - BoomNumber)){
+        if (numOpen == (PlatformSize * PlatformSize - BoomNumber )&& !isGameOver()){
             gameOver = true;
+            is_win = true;
             System.out.println("You Win!"); // must be changed
-
         }
     }
 }
