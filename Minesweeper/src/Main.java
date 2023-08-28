@@ -9,13 +9,13 @@ public class Main {
 
     private static void chooseAndPlay(){
         Frame window = new Frame("Minesweeper");
-        int plWidth = 320;
-        int plHeight = 480;
+        int plWidth = 240;
+        int plHeight = 320;
         window.setSize(plWidth,plHeight);
         window.setBackground(Color.white);
         window.setLayout(new BorderLayout());
 
-        Panel middle = new Panel(new GridLayout(4,1,5,50));
+        Panel middle = new Panel(new GridLayout(4,1,0,20));
 
         window.add(middle,BorderLayout.CENTER);
         Button easy = new Button("Easy");
@@ -79,7 +79,7 @@ public class Main {
             game.resultWindow.dispose();
             game.window.dispose();
         };
-        retry = new Button("再来一局？");
+        retry = new Button("Retry");
         retry.addActionListener(retryListener);
         chooseAndPlay();
 

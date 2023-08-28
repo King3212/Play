@@ -115,7 +115,7 @@ public class Platform {
 
 
     public boolean firstClick(int x, int y,Button[] buttons){
-        while (Blocks[x][y].isBoom()){
+        if (Blocks[x][y].isBoom()){
             return false;
         }
         Blocks[x][y].setOpen();

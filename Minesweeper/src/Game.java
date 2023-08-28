@@ -76,15 +76,15 @@ public class Game {
     }
     private void gameOver(){
         resultWindow = new JFrame("Result");
-        resultWindow.setSize(240,120);
+        resultWindow.setSize(240,150);
         resultWindow.setLayout(new GridLayout(3,1));
         resultWindow.setBackground(Color.lightGray);
         eTime = System.nanoTime();
 
         if(platform.is_win()){
-            resultWindow.add(new TextField("You Win!"));
+            resultWindow.add(new TextField("恭喜，你赢了!"));
         } else if (!platform.is_win()) {
-            resultWindow.add(new TextField("You Lost!"));
+            resultWindow.add(new TextField("很遗憾，输掉了!"));
         }
         resultWindow.add(new TextField("花费时间："+ (int)((eTime - sTime)/1e9) + "秒"));
         resultWindow.addWindowListener(new WindowAdapter() {
