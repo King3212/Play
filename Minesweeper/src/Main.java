@@ -4,13 +4,15 @@ import java.awt.event.*;
 import static java.lang.System.exit;
 
 public class Main {
-    public static void main(String[] args) {
-        //init Platforms
+    private static Game game;
+    private static Button retry;
+
+    private static void chooseAndPlay(){
         Frame window = new Frame("Minesweeper");
-        int plWidth = 640;
-        int plHeight = 640;
+        int plWidth = 320;
+        int plHeight = 480;
         window.setSize(plWidth,plHeight);
-        window.setBackground(Color.lightGray);
+        window.setBackground(Color.white);
         window.setLayout(new BorderLayout());
 
         Panel middle = new Panel(new GridLayout(4,1,5,50));
@@ -20,10 +22,10 @@ public class Main {
         Button normal = new Button("Normal");
         Button hard = new Button("hard");
         Button exit = new Button("exit");
-        easy.setBackground(Color.white);
-        normal.setBackground(Color.white);
-        hard.setBackground(Color.white);
-        exit.setBackground(Color.white);
+        easy.setBackground(Color.lightGray);
+        normal.setBackground(Color.lightGray);
+        hard.setBackground(Color.lightGray);
+        exit.setBackground(Color.GRAY);
 
         middle.add(easy);
         middle.add(normal);
@@ -48,37 +50,42 @@ public class Main {
         exit.addActionListener(exitListener);
 
 
-        ActionListener hardListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                window.setVisible(false);
-                Game game = new Game(3);
-                game.play();
-            }
-
+        ActionListener hardListener = actionEvent -> {
+            window.setVisible(false);
+            game = new Game(3);
+            game.play(retry);
         };
         hard.addActionListener(hardListener);
 
-        ActionListener easyListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                window.setVisible(false);
-                Game game = new Game(1);
-                game.play();
-            }
-
+        ActionListener easyListener = actionEvent -> {
+            window.setVisible(false);
+            game = new Game(1);
+            game.play(retry);
         };
         easy.addActionListener(easyListener);
 
-        ActionListener normalListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                window.setVisible(false);
-                Game game = new Game(2);
-                game.play();
-            }
-
+        ActionListener normalListener = actionEvent -> {
+            window.setVisible(false);
+            game = new Game(2);
+            game.play(retry);
         };
         normal.addActionListener(normalListener);
+
     }
+    public static void main(String[] args) {
+        //init Platforms
+        ActionListener retryListener = actionEvent -> {
+            chooseAndPlay();
+            game.resultWindow.dispose();
+            game.window.dispose();
+        };
+        retry = new Button("再来一局？");
+        retry.addActionListener(retryListener);
+        chooseAndPlay();
+
+
+
+        System.out.println("finish!");
+    }
+
 }

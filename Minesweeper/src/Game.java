@@ -1,19 +1,22 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import static java.lang.System.exit;
 
 public class Game {
-    int level;
-    int PlatformSize;
-    int BoomNumber;
-    Frame window;
+    private int level;
+    private int PlatformSize;
+    private int BoomNumber;
+    public JFrame window;
+    private long sTime;
+    private long eTime;
+    private Button retry;
 
+    public JFrame resultWindow;
+    Platform platform;
     //choose level
     public Game(int level) {
         this.level = level;
@@ -53,10 +56,13 @@ public class Game {
         }
     }
 
-    private void click(int x, int y, int times, Platform platform, boolean mark, Button[] buttons){
+    private void click(int x, int y, int times, boolean mark, Button[] buttons){
+
         if (times == 1){
+            sTime = System.nanoTime();
             while (! platform.firstClick(x, y,buttons)){
                 platform = new Platform(PlatformSize, BoomNumber,buttons);
+                sTime = System.nanoTime();
             }
         }
         else{
@@ -64,43 +70,42 @@ public class Game {
             platform.checkGameWin();
         }
         if (platform.isGameOver()){
-            Frame window = new Frame("Result");
-            window.setSize(240,180);
-            window.setLayout(new GridLayout(2,1));
-            window.setBackground(Color.lightGray);
-            if(platform.is_win()){
-                window.add(new TextField("You Win"));
-            } else if (!platform.is_win()) {
-                window.add(new TextField("You Lost"));
-            }
-            window.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    window.setVisible(false);
-                }
-            });
-            window.add(new TextField("These windows will close in 20 sec."));
-            window.setVisible(true);
-            TimerTask quit = new TimerTask() {
-                @Override
-                public void run() {
-                    window.setVisible(false);
-                    exit(0);
-                }
-            };
-            Timer timer = new Timer();
-            timer.schedule(quit,10*1000L);
+            this.gameOver();
+//
         }
+    }
+    private void gameOver(){
+        resultWindow = new JFrame("Result");
+        resultWindow.setSize(240,120);
+        resultWindow.setLayout(new GridLayout(3,1));
+        resultWindow.setBackground(Color.lightGray);
+        eTime = System.nanoTime();
+
+        if(platform.is_win()){
+            resultWindow.add(new TextField("You Win!"));
+        } else if (!platform.is_win()) {
+            resultWindow.add(new TextField("You Lost!"));
+        }
+        resultWindow.add(new TextField("花费时间："+ (int)((eTime - sTime)/1e9) + "秒"));
+        resultWindow.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                resultWindow.setVisible(false);
+                System.exit(0);
+            }
+        });
+        resultWindow.add(retry);
+        resultWindow.setVisible(true);
     }
 
 
-
-    public void play() {
+    public void play(Button retry) {
+        this.retry = retry;
         printLines();
         setLevel();
         final int[] times = {1};
 
-        window = new Frame("Minesweeper");
+        window = new JFrame("Minesweeper");
         int plWidth = PlatformSize * 40;
         int plHeight = PlatformSize * 40;
         window.setSize(plWidth,plHeight);
@@ -108,7 +113,7 @@ public class Game {
         window.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                exit(0);
+                System.exit(0);
             }
         });
 
@@ -120,7 +125,7 @@ public class Game {
         }
         MouseListener[] mouseListeners = new MouseListener[PlatformSize*PlatformSize];
 
-        Platform platform = new Platform(PlatformSize, BoomNumber,buttons);
+        platform = new Platform(PlatformSize, BoomNumber,buttons);
 
         for (int i = 0; i < PlatformSize * PlatformSize; i++){
             int finalI = i;
@@ -128,11 +133,11 @@ public class Game {
 
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    if (e.getButton() == e.BUTTON1){
-                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], platform, false,buttons);
+                    if (e.getButton() == MouseEvent.BUTTON1){
+                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], false,buttons);
                         times[0] ++;
-                    }else if (e.getButton() == e.BUTTON3){
-                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], platform, true,buttons);
+                    }else if (e.getButton() == MouseEvent.BUTTON3){
+                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], true,buttons);
                         times[0] ++;
                     }
 
@@ -164,7 +169,6 @@ public class Game {
         }
 
         window.setVisible(true);
-
 
     }
 }

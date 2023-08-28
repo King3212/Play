@@ -27,10 +27,12 @@ public class Block {
                 System.out.print("");
                 x.setLabel("");
                 x.setBackground(Color.white);
+                x.setEnabled(false);
             } else {
                 System.out.print(number);
                 x.setLabel(number + "");
                 x.setBackground(Color.white);
+                x.setEnabled(false);
             }
         }else {
             System.out.print("■");

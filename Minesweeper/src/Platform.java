@@ -153,6 +153,7 @@ public class Platform {
                     setGameOver();
                 } else {
                     Open();
+
                     print(buttons);
                 }
             }
