@@ -1,9 +1,9 @@
 import java.awt.*;
 
 public class Platform {
-    private int PlatformSize;
-    private int BoomNumber;
-    private Block[][] Blocks;
+    private final int PlatformSize;
+    private final int BoomNumber;
+    private final Block[][] Blocks;
 
     private boolean is_win = false;
 
@@ -163,21 +163,6 @@ public class Platform {
     }
 
     public void checkGameWin() {
-        /*int numMarkBut = 0;
-        for (int x = 1; x < PlatformSize + 1; x++) {
-            for (int y = 1; y < PlatformSize + 1; y++) {
-                if (Blocks[x][y].isMark() && !Blocks[x][y].isBoom()){
-                    numMarkBut++;
-                }
-            }
-        }
-        if (numMarkBut != 0 ){
-            if (BoomNumber + numOpen == PlatformSize * PlatformSize){
-                System.out.println("You Win!");
-                print();
-                gameOver = true;
-            }
-        }*/
         int numOpen = 0;
         for (int x = 1; x < PlatformSize + 1; x++) {
             for (int y = 1; y < PlatformSize + 1; y++) {

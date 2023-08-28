@@ -33,13 +33,7 @@ public class Main {
         middle.add(exit);
 
         window.setVisible(true);
-        ActionListener exitListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                exit(0);
-            }
-
-        };
+        ActionListener exitListener = actionEvent -> exit(0);
 
         window.addWindowListener(new WindowAdapter() {
             @Override

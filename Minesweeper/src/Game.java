@@ -7,12 +7,11 @@ import java.awt.event.WindowEvent;
 
 
 public class Game {
-    private int level;
+    private final int level;
     private int PlatformSize;
     private int BoomNumber;
     public JFrame window;
     private long sTime;
-    private long eTime;
     private Button retry;
 
     public JFrame resultWindow;
@@ -79,11 +78,11 @@ public class Game {
         resultWindow.setSize(240,150);
         resultWindow.setLayout(new GridLayout(3,1));
         resultWindow.setBackground(Color.lightGray);
-        eTime = System.nanoTime();
+        long eTime = System.nanoTime();
 
         if(platform.is_win()){
             resultWindow.add(new TextField("恭喜，你赢了!"));
-        } else if (!platform.is_win()) {
+        } else{
             resultWindow.add(new TextField("很遗憾，输掉了!"));
         }
         resultWindow.add(new TextField("花费时间："+ (int)((eTime - sTime)/1e9) + "秒"));

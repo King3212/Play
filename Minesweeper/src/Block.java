@@ -6,13 +6,6 @@ public class Block {
     private boolean mark;
     private boolean open;
 
-    public Block(){
-        boolean boom = false;
-        int number = 0;
-        boolean mark = false;
-        boolean open = false;
-    }
-
     // it was needed to be changed, because in gui, print is not needed anymore
     // maybe change color is good? deep gray is normal; light gray is nothing green is mark; red is boom!
     public void print(Button x){
