@@ -17,7 +17,7 @@ public class Block {
                 System.out.print("*");
                 x.setBackground(Color.red);}
             else if (number == 0) {
-                System.out.print("");
+                System.out.print(" ");
                 x.setLabel("");
                 x.setBackground(Color.white);
                 x.setEnabled(false);

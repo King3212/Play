@@ -46,6 +46,9 @@ public class Platform {
      * “+”是有意义的
      * “*”是无意义的
      * 方便后面计算数字而已
+     *
+     *
+     * Math.random()提供了一个大于等于0小于1的数字
      * */
     private void randomSetBoom(){
         for (int i = 0; i < BoomNumber; i++){

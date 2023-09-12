@@ -4,6 +4,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 
 public class Game {
@@ -13,7 +14,7 @@ public class Game {
     public JFrame window;
     private long sTime;
     private Button retry;
-
+    private RecordRW record;
     public JFrame resultWindow;
     Platform platform;
     //choose level
@@ -55,7 +56,7 @@ public class Game {
         }
     }
 
-    private void click(int x, int y, int times, boolean mark, Button[] buttons){
+    private void click(int x, int y, int times, boolean mark, Button[] buttons) throws IOException {
 
         if (times == 1){
             sTime = System.nanoTime();
@@ -73,19 +74,28 @@ public class Game {
 //
         }
     }
-    private void gameOver(){
+    private void gameOver() throws IOException {
         resultWindow = new JFrame("Result");
         resultWindow.setSize(240,150);
         resultWindow.setLayout(new GridLayout(3,1));
         resultWindow.setBackground(Color.lightGray);
-        long eTime = System.nanoTime();
+
+        record = new RecordRW();
+        int usingTime = (int) ((System.nanoTime()-sTime)/1e9);
 
         if(platform.is_win()){
-            resultWindow.add(new TextField("恭喜，你赢了!"));
+            String finalText = "恭喜，你赢了!";
+
+            if (record.newRecord(usingTime)){
+                finalText = finalText + "   新纪录";
+            }
+
+            resultWindow.add(new TextField(finalText));
         } else{
             resultWindow.add(new TextField("很遗憾，输掉了!"));
         }
-        resultWindow.add(new TextField("花费时间："+ (int)((eTime - sTime)/1e9) + "秒"));
+
+        resultWindow.add(new TextField("花费时间："+ usingTime + "秒"));
         resultWindow.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -133,10 +143,18 @@ public class Game {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     if (e.getButton() == MouseEvent.BUTTON1){
-                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], false,buttons);
+                        try {
+                            click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], false,buttons);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         times[0] ++;
                     }else if (e.getButton() == MouseEvent.BUTTON3){
-                        click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], true,buttons);
+                        try {
+                            click(finalI % PlatformSize + 1, finalI / PlatformSize + 1,times[0], true,buttons);
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
                         times[0] ++;
                     }
 
