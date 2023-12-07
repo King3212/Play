@@ -98,22 +98,24 @@ public class Platform {
         }
     }
     private void Open(){
-        boolean repeat;
-        do {
-            repeat = false;
-            for (int x = 1; x < PlatformSize + 1; x++) {
-                for (int y = 1; y < PlatformSize + 1; y++) {
-                    for (int i = -1; i < 2; i++) {
-                        for (int j = -1; j < 2; j++) {
-                            if (Blocks[x + i][y + j].isOpen() && Blocks[x + i][y + j].getNumber() == 0 && !Blocks[x][y].isOpen()) {
-                                Blocks[x][y].setOpen();
-                                repeat = true;
-                            }
+        while (open());
+    }
+
+    private Boolean open(){
+        for (int x = 1; x < PlatformSize + 1; x++) {
+            for (int y = 1; y < PlatformSize + 1; y++) {
+                for (int i = -1; i < 2; i++) {
+                    for (int j = -1; j < 2; j++) {
+                        if (Blocks[x + i][y + j].isOpen() && Blocks[x + i][y + j].getNumber() == 0 && !Blocks[x][y].isOpen()) {
+                            Blocks[x][y].setOpen();
+                            return true;
+
                         }
                     }
                 }
             }
-        }while(repeat);
+        }
+        return false;
     }
 
 
