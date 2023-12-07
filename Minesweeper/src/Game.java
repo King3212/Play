@@ -39,22 +39,6 @@ public class Game {
         }
     }
 
-    // when in gui, it was needed no more
-    private static void printLines() {
-        try{
-            String os = System.getProperty("os.name");
-            if (os.contains("Windows")){
-                new ProcessBuilder("cmd","/c","cls").inheritIO().start().waitFor();
-            }else {
-                for (int i = 0; i < 50 ; i++){
-                    System.out.println();
-                }
-            }
-        }
-        catch (Exception exception){
-            //Handle exception.
-        }
-    }
 
     private void click(int x, int y, int times, boolean mark, Button[] buttons) throws IOException {
 
@@ -110,7 +94,6 @@ public class Game {
 
     public void play(Button retry) {
         this.retry = retry;
-        printLines();
         setLevel();
         final int[] times = {1};
 

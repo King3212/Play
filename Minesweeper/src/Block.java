@@ -10,25 +10,20 @@ public class Block {
     // maybe change color is good? deep gray is normal; light gray is nothing green is mark; red is boom!
     public void print(Button x){
         if (mark){
-            System.out.print("▲");
             x.setLabel("P");
         }else if (open){
             if (boom) {
-                System.out.print("*");
                 x.setBackground(Color.red);}
             else if (number == 0) {
-                System.out.print(" ");
                 x.setLabel("");
                 x.setBackground(Color.white);
                 x.setEnabled(false);
             } else {
-                System.out.print(number);
-                x.setLabel(number + "");
+                x.setLabel(String.valueOf(number));
                 x.setBackground(Color.white);
                 x.setEnabled(false);
             }
         }else {
-            System.out.print("■");
             x.setLabel("");
         }
 

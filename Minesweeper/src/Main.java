@@ -76,10 +76,6 @@ public class Main {
         retry = new Button("Retry");
         retry.addActionListener(retryListener);
         chooseAndPlay();
-
-
-
-        System.out.println("finish!");
     }
 
 }
