@@ -59,7 +59,7 @@ public class Game {
         }
     }
     private void gameOver() throws IOException {
-        resultWindow = new JFrame("Result");
+        resultWindow = new JFrame("结果");
         resultWindow.setSize(240,150);
         resultWindow.setLayout(new GridLayout(3,1));
         resultWindow.setBackground(Color.lightGray);

@@ -8,7 +8,7 @@ public class Main {
     private static Button retry;
 
     private static void chooseAndPlay(){
-        Frame window = new Frame("Minesweeper");
+        Frame window = new Frame("扫雷");
         int plWidth = 240;
         int plHeight = 320;
         window.setSize(plWidth,plHeight);
@@ -18,10 +18,10 @@ public class Main {
         Panel middle = new Panel(new GridLayout(4,1,0,20));
 
         window.add(middle,BorderLayout.CENTER);
-        Button easy = new Button("Easy");
-        Button normal = new Button("Normal");
-        Button hard = new Button("hard");
-        Button exit = new Button("exit");
+        Button easy = new Button("容易");
+        Button normal = new Button("一般");
+        Button hard = new Button("困难");
+        Button exit = new Button("退出");
         easy.setBackground(Color.lightGray);
         normal.setBackground(Color.lightGray);
         hard.setBackground(Color.lightGray);
@@ -73,7 +73,7 @@ public class Main {
             game.resultWindow.dispose();
             game.window.dispose();
         };
-        retry = new Button("Retry");
+        retry = new Button("重试");
         retry.addActionListener(retryListener);
         chooseAndPlay();
     }

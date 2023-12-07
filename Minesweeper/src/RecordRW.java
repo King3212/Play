@@ -26,7 +26,7 @@ public class RecordRW {
     }
     private void write() throws IOException {
 
-        String dir = ".\\temp.txt";
+        String dir = ".\\record.txt";
         File file = new File(dir);
         if (!file.exists()){
             file.createNewFile();
@@ -40,7 +40,7 @@ public class RecordRW {
         writer.close();
     }
     private void read() throws IOException {
-        String dir = ".\\temp.txt";
+        String dir = ".\\record.txt";
         File file = new File(dir);
         if (!file.exists()){
             file.createNewFile();
